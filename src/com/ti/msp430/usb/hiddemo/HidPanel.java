@@ -182,29 +182,29 @@ public class HidPanel extends JPanel implements DataReceivedActionListener {
 	 * handle decoration close.
 	 * 
 	 */
-	@SuppressWarnings("deprecation")
-	public static void main(final String[] args) {
-
-		final JFrame jf = new JFrame("MSP430 HID USB Application");
-
-		jf.setSize(new java.awt.Dimension(863, 560));
-
-		jf.getContentPane().setLayout(new BorderLayout());
-		final HidPanel hp = new HidPanel();
-		jf.setIconImage(Toolkit.getDefaultToolkit().getImage(jf.getClass().getResource("/icons/TI_Bug_Icon_Red.gif")));
-		jf.getContentPane().add(hp, BorderLayout.CENTER);
-
-		final WindowAdapter wa = new WindowAdapter() {
-                        @Override
-			public void windowClosing(final WindowEvent e) {
-				hp.disconnect();
-				System.exit(0);
-			}
-		};
-		jf.addWindowListener(wa);
-		jf.show();
-
-	}
+//	@SuppressWarnings("deprecation")
+//	public static void main(final String[] args) {
+//
+////		final JFrame jf = new JFrame("MSP430 HID USB Application");
+////
+////		jf.setSize(new java.awt.Dimension(863, 560));
+////
+////		jf.getContentPane().setLayout(new BorderLayout());
+//		final HidPanel hp = new HidPanel();
+////		jf.setIconImage(Toolkit.getDefaultToolkit().getImage(jf.getClass().getResource("/icons/TI_Bug_Icon_Red.gif")));
+////		jf.getContentPane().add(hp, BorderLayout.CENTER);
+////
+////		final WindowAdapter wa = new WindowAdapter() {
+////                        @Override
+////			public void windowClosing(final WindowEvent e) {
+////				hp.disconnect();
+////				System.exit(0);
+////			}
+////		};
+////		jf.addWindowListener(wa);
+////		jf.show();
+//
+//	}
 
 	protected final String aboutMessage = "Texas Instruments MSP430 USB HID Application\n\n\nBased on original design by William Goh\nS. Tsongas and Tim Logan\n\nCopyright: Texas Instruments 2012 ";
 	protected final HidCommunicationManager hMan;
@@ -265,7 +265,7 @@ public class HidPanel extends JPanel implements DataReceivedActionListener {
 
 		sendButton.setEnabled(false);
 
-		// Setting the default vid/pid to TI
+//		 Setting the default vid/pid to TI
 		vidField.setText("0x" + Integer.toHexString(HidCommunicationManager.USB_VENDOR));
 		pidField.setText("0x0" + Integer.toHexString(HidCommunicationManager.USB_PRODUCT));
 
@@ -279,7 +279,7 @@ public class HidPanel extends JPanel implements DataReceivedActionListener {
 		consoleArea.setRows(consoleArea.getLineCount());
 
 		/* Adding Action Listeners to all of our buttons */
-		// Setting up our action listeners
+//		 Setting up our action listeners
 		setVidPidButton.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
 				setVidPidButtonClicked();
@@ -822,7 +822,8 @@ public class HidPanel extends JPanel implements DataReceivedActionListener {
 	}
 
 	private int getFormattedVid() {
-		return Integer.parseInt(vidField.getText().replace("0x", ""), 16);
+
+            return Integer.parseInt(vidField.getText().replace("0x", ""), 16);
 	}
 
 	private void init() {
@@ -959,21 +960,26 @@ public class HidPanel extends JPanel implements DataReceivedActionListener {
 		int[] interfaces=new int[0];
 		String[] serials=new String[0];
 		/* Removing all old entries, checking validity of input */
-		serialNumberBox.removeAllItems();
-		interfaceBox.removeAllItems();
+//		serialNumberBox.removeAllItems();
+//		interfaceBox.removeAllItems();
+              
+//		if (vidField.getText().trim().equals("0x") || pidField.getText().trim().equals("0x"))
+//			return;
 
-		if (vidField.getText().trim().equals("0x") || pidField.getText().trim().equals("0x"))
-			return;
-
-		final int vid = getFormattedVid();
-		final int pid = getFormattedPid();
-		
-		
+//		final int vid = getFormattedVid();
+//		final int pid = getFormattedPid();
+//		
+//                System.out.println(vid);
+//                System.out.println(pid);
+                
+		final int vid = 0x2047;
+		final int pid = 0x301;
+                
 		try {
 			/* Calling our native functions and processing the results */
 			interfaces = hMan.getInterfacesForVidPid(vid, pid);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null,  "getInterfacesForVidPid error", "Alert",JOptionPane.ERROR_MESSAGE);
+//			JOptionPane.showMessageDialog(null,  "getInterfacesForVidPid error", "Alert",JOptionPane.ERROR_MESSAGE);
 			
 		}
 
@@ -981,10 +987,13 @@ public class HidPanel extends JPanel implements DataReceivedActionListener {
 			/* Calling our native functions and processing the results */
 			serials = hMan.getSerialsForVidPid(vid, pid);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null,  "getSerialsForVidPid error", "Alert",JOptionPane.ERROR_MESSAGE);
-			e.printStackTrace();
+//			JOptionPane.showMessageDialog(null,  "getSerialsForVidPid error", "Alert",JOptionPane.ERROR_MESSAGE);
+//			e.printStackTrace();
 		}
 		
+                 System.out.println(serials.length);
+                      System.out.println(interfaces.length);
+                
 		
 		final DefaultComboBoxModel mod = (DefaultComboBoxModel) serialNumberBox.getModel();
 		if ((serials.length==0) ||  (interfaces.length == 0) ){
