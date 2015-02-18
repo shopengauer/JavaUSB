@@ -83,84 +83,62 @@ public class FXMLDocumentController implements Initializable,DataReceivedActionL
 
     @FXML
     void handleSetVidPidButtonAction(ActionEvent event) {
-                 int[] interfaces= new int[10];
+                int[] interfaces= new int[10];
 		String[] serials=new String[10];
                 interfaceCombo.getItems().clear();
                 serialCombo.getItems().clear();
                 
                if (inputVid.getText().trim().equals("0x") || inputPid.getText().trim().equals("0x"))
 			return; 
-                
-               
                
                 final int vid = getFormattedVid();
 		final int pid = getFormattedPid();
 //                final int vid = 0x2047;
-//		final int pid = 0x301;
-                
-                
-                 System.out.println(vid);
-                      System.out.println(pid);
+//		  final int pid = 0x301;
+//                System.out.println(vid);
+//                System.out.println(pid);
                 
                 try {
 			/* Calling our native functions and processing the results */
 			interfaces = hMan.getInterfacesForVidPid(vid, pid);
 		} catch (Exception e) {
-//			JOptionPane.showMessageDialog(null,  "getInterfacesForVidPid error", "Alert",JOptionPane.ERROR_MESSAGE);
-			connectLbl.setText("getInterfacesForVidPid error");
+                      connectLbl.setText("getInterfacesForVidPid error");
 		}
-                
-                
+               
                 try {
 			/* Calling our native functions and processing the results */
 			serials = hMan.getSerialsForVidPid(vid, pid);
 		} catch (Exception e) {
-//			JOptionPane.showMessageDialog(null,  "getSerialsForVidPid error", "Alert",JOptionPane.ERROR_MESSAGE);
-			connectLbl.setText("getSerialsForVidPid error");
-                        e.printStackTrace();
+  			connectLbl.setText("getSerialsForVidPid error");
 		}
-		
-		
-//		final DefaultComboBoxModel mod = (DefaultComboBoxModel) serialNumberBox.getModel();
-		      System.out.println(serials.length);
-                      System.out.println(interfaces.length);
+	 
+//	      System.out.println(serials.length);
+//            System.out.println(interfaces.length);
                
-                      if ((serials.length==0) ||  (interfaces.length == 0) ){
-//			JOptionPane.showMessageDialog(null,  "No Serial Interfaces Found for VID/PID combination (vid="+Integer.toHexString(vid)+ 
-//					" pid="+Integer.toHexString(pid)+")\nPlease connect a board with USB on this workstation.", "Oops",JOptionPane.WARNING_MESSAGE);
-//		
-                           connectLbl.setText("No Serial Interfaces Found for VID/PID combination" + Integer.toHexString(vid) +" " + Integer.toHexString(pid));
-                }
-		
-                
-                
-                serialCombo.getItems().addAll(Arrays.asList(serials));//                    if (!serials[i].equals("") && mod.getIndexOf(serials[i]) < 0)
-//				serialNumberBox.insertItemAt(serials[i], 0);
+         if ((serials.length == 0) || (interfaces.length == 0)) {
+            connectLbl.setText("No Serial Interfaces Found for VID/PID combination" + Integer.toHexString(vid) + " " + Integer.toHexString(pid));
+        }
 
-		//sets the default HID value for display in Interface box.  Especially necessary for one HID interface
-		if ((interfaces.length == 1) && (interfaces[0] == -1)) {
-			
-                    interfaceCombo.getItems().add("HID 0");     
-		} else {
-			for (int i = 0; i < interfaces.length; i++) {
-//				interfaceBox.insertItemAt("HID " + interfaces[i], interfaceBox.getItemCount());
-			  interfaceCombo.getItems().add("HID " + interfaces[i]);
-                        }
-		     
-                
-                }
-		
-                
-                
-		if (!serialCombo.getItems().isEmpty())
-			serialCombo.setValue(serialCombo.getItems().get(0));
+        serialCombo.getItems().addAll(Arrays.asList(serials));//                    
+//		sets the default HID value for display in Interface box.  Especially necessary for one HID interface
+        if ((interfaces.length == 1) && (interfaces[0] == -1)) {
 
-		if (!interfaceCombo.getItems().isEmpty())
-			interfaceCombo.setValue(interfaceCombo.getItems().get(0));
-                
-                
-                
-                
+            interfaceCombo.getItems().add("HID 0");
+        } else {
+            for (int i = 0; i < interfaces.length; i++) {
+                interfaceCombo.getItems().add("HID " + interfaces[i]);
+            }
+
+        }
+
+
+
+        if (!serialCombo.getItems().isEmpty())
+                serialCombo.setValue(serialCombo.getItems().get(0));
+
+        if (!interfaceCombo.getItems().isEmpty())
+                interfaceCombo.setValue(interfaceCombo.getItems().get(0));
+               
                 
     }
 

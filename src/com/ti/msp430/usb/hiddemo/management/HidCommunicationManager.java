@@ -73,7 +73,7 @@ public class HidCommunicationManager {
 public HidCommunicationManager() {
 		
 		
-	    is64bit = (System.getProperty("os.arch").indexOf("64") != -1);
+	    is64bit = (System.getProperty("os.arch").contains("64"));
 		System.out.println("is64Bit="+is64bit);
 		if (is64bit) {
 		   System.out.println("Loading 64 bit version HidCommunicationManager64");

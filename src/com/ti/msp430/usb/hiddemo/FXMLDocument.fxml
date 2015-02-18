@@ -19,7 +19,7 @@
             </ToolBar>
          </bottom>
          <top>
-            <ToolBar prefHeight="80.0" prefWidth="657.0" BorderPane.alignment="CENTER">
+            <ToolBar  prefHeight="80.0" prefWidth="657.0" BorderPane.alignment="CENTER">
                <items>
                   <Label text="VID" />
                   <TextField fx:id="inputVid" prefHeight="30.0" prefWidth="100.0" />
