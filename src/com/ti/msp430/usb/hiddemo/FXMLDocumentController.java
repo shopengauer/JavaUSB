@@ -37,12 +37,14 @@ import javax.swing.JOptionPane;
 public class FXMLDocumentController implements Initializable,DataReceivedActionListener {
     
     
-    protected HidCommunicationManager hMan;
+    private HidCommunicationManager hMan;
     protected HidDataReceiveTask readTask;
    //  private HidCommunicationManager hMan;
      private DataReceivedActionListener listener;
      private boolean stop = false;
-    
+     private  Service<Void> service;
+     
+     
     @FXML
     private Button setVidPidBtn;
 
@@ -75,7 +77,8 @@ public class FXMLDocumentController implements Initializable,DataReceivedActionL
 		connect();
            
            } else {
-		//connectBtn.setText("Connect");	//disconnect();
+		disconnect();
+//connectBtn.setText("Connect");	//disconnect();
 		}
 	 
     
@@ -228,7 +231,7 @@ public class FXMLDocumentController implements Initializable,DataReceivedActionL
 		readTask = new HidDataReceiveTask(hMan);
 		 
                 //readTask.setListener(this);
-	       Service<Void> service = new Service<Void>() {
+	       service = new Service<Void>() {
             @Override
             protected Task<Void> createTask() {
                 return new Task<Void>() {
@@ -249,9 +252,9 @@ public class FXMLDocumentController implements Initializable,DataReceivedActionL
                                 }
                                 
                         } catch (HidCommunicationManager.HidCommunicationException e) {
-                                listener.fireStringReceivedEvent("Error receiving buffer from device!");
-                                listener.fireUnableToReadEvent();
-                                return;
+                            //    listener.fireStringReceivedEvent("Error receiving buffer from device!");
+                            //    listener.fireUnableToReadEvent();
+                            //    return;
                         } 
 //                                    catch (InterruptedException e) {
 //                                listener.fireStringReceivedEvent("Read polling thread existed");
@@ -302,9 +305,46 @@ public class FXMLDocumentController implements Initializable,DataReceivedActionL
 //		lightLabel.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/icons/green.png"))));
 	}
 
-	
-    
-    
+	private void disconnect() {
+
+		if (!isConnected())
+			return;
+
+		hMan.disconnectDevice();
+
+		
+                service.cancel();
+                //readThread.setStop(true);
+//		try {
+//			//service.join();
+//		} catch (final InterruptedException e) {
+//
+//			e.printStackTrace();
+//		}
+
+               if(service.getState() == Service.State.CANCELLED)  
+               {textArea.appendText("\nDisconnected from device");
+		//consoleArea.setRows(consoleArea.getLineCount());
+
+		//vidField.setEnabled(true);
+		//pidField.setEnabled(true);
+		//setVidPidButton.setEnabled(true);
+		//serialNumberBox.setEnabled(true);
+		//interfaceBox.setEnabled(true);
+		//sendButton.setEnabled(false);
+		///connectButton.setSelected(false);
+		connectBtn.setText("Connect");
+		//lightLabel.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/icons/red.png"))));
+               }
+		
+
+	}
+   
+    private boolean isConnected() {
+		
+	return service.isRunning();
+
+	}
     
     
 }
