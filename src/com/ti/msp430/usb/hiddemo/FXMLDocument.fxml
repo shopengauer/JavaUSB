@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -13,13 +14,16 @@
          <bottom>
             <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
               <items>
-                <Button fx:id="connectBtn" mnemonicParsing="false" onAction="#handleConnectButtonAction" text="Connect" />
+                <Button fx:id="connectBtn" mnemonicParsing="false" onAction="#handleConnectButtonAction" text="Connect HID" />
+                  <Button fx:id="connectServerBtn" mnemonicParsing="false" onAction="#handleConnectServerButtonAction" text="Connect to Server" />
+                  <Label text="URI" />
+                  <TextField fx:id="uriTextArea" opacity="0.35" prefHeight="31.0" prefWidth="269.0" />
                   <Label fx:id="connectLbl" prefHeight="21.0" prefWidth="663.0" text="" />
               </items>
             </ToolBar>
          </bottom>
          <top>
-            <ToolBar  prefHeight="80.0" prefWidth="657.0" BorderPane.alignment="CENTER">
+            <ToolBar prefHeight="80.0" prefWidth="657.0" BorderPane.alignment="CENTER">
                <items>
                   <Label text="VID" />
                   <TextField fx:id="inputVid" prefHeight="30.0" prefWidth="100.0" />

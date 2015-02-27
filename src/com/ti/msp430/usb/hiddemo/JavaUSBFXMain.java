@@ -5,29 +5,24 @@
  */
 package com.ti.msp430.usb.hiddemo;
 
-import com.ti.msp430.usb.hiddemo.management.DataReceivedActionListener;
-import com.ti.msp430.usb.hiddemo.management.HidCommunicationManager;
-import com.ti.msp430.usb.hiddemo.management.HidDataReceiveThread;
-import com.ti.msp430.usb.hiddemo.management.HidCommunicationManager.HidCommunicationException;
 
 
 
 
 //import com.ti.msp430.usb.hiddemo.management.HidCommunicationManager;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  *
  * @author Vasiliy
  */
+
 public class JavaUSBFXMain extends Application {
     
     
@@ -50,7 +45,7 @@ public class JavaUSBFXMain extends Application {
         
        // StackPane root = new StackPane();
        // root.getChildren().add(btn);
-        
+
         Scene scene = new Scene(root, 1000, 700);
         
         primaryStage.setTitle("HID Datapipe USB");
@@ -75,6 +70,7 @@ public class JavaUSBFXMain extends Application {
 //        this.hMan = new HidCommunicationManager();
 //        vidField.setText("0x" + Integer.toHexString(HidCommunicationManager.USB_VENDOR));
 //		pidField.setText("0x0" + Integer.toHexString(HidCommunicationManager.USB_PRODUCT));
+        ApplicationContext ap = new ClassPathXmlApplicationContext("spring.xml");
     }
     
     

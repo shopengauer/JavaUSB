@@ -43,7 +43,12 @@ public class FXMLDocumentController implements Initializable,DataReceivedActionL
      private DataReceivedActionListener listener;
      private boolean stop = false;
      private  Service<Void> service;
+     private JavaFxWebsocket websocket;
      
+     
+    
+    @FXML
+    private Button connectServerBtn; 
      
     @FXML
     private Button setVidPidBtn;
@@ -51,6 +56,9 @@ public class FXMLDocumentController implements Initializable,DataReceivedActionL
     @FXML
     private Button connectBtn;
 
+    @FXML
+    private TextField uriTextArea;
+    
     @FXML
     private Label connectLbl;
 
@@ -72,7 +80,7 @@ public class FXMLDocumentController implements Initializable,DataReceivedActionL
     
     @FXML
     void handleConnectButtonAction(ActionEvent event) {
-           if (connectBtn.getText().equals("Connect")) {
+           if (connectBtn.getText().equals("Connect HID")) {
 		 //connectBtn.setText("Disconnect");	//
 		connect();
            
@@ -82,6 +90,16 @@ public class FXMLDocumentController implements Initializable,DataReceivedActionL
 		}
 	 
     
+    }
+    
+    @FXML
+    void handleConnectServerButtonAction(ActionEvent event) {
+         
+        if (!uriTextArea.getText().equals("")) {
+            websocket.connectToWebSocket("ws://localhost:8080/BinaryWebSocketServer/images");
+        } else {
+            textArea.appendText("Input websocket server URI!");
+        }
     }
 
     @FXML
@@ -201,7 +219,7 @@ public class FXMLDocumentController implements Initializable,DataReceivedActionL
 		if (serialCombo.getItems().isEmpty() && interfaceCombo.getItems().isEmpty()) {
 		    textArea.setText("ERROR: Please ensure that VID/PID information is valid.");
                     
-                    connectBtn.setText("Connect");
+                    connectBtn.setText("Connect HID");
 			return;
 		}
 
@@ -219,10 +237,10 @@ public class FXMLDocumentController implements Initializable,DataReceivedActionL
 
 		try {
 			hMan.connectDevice(getFormattedVid(), getFormattedPid(), serial, inf);
-		        connectBtn.setText("Disconnect");
+		        connectBtn.setText("Disconnect HID");
                 } catch (final HidCommunicationManager.HidCommunicationException e) {
 			textArea.appendText("\nCould not connect to device");
-			connectBtn.setText("Connect");
+			connectBtn.setText("Connect HID");
 			//consoleArea.setRows(consoleArea.getLineCount());
 			e.printStackTrace();
 			return;
@@ -333,7 +351,7 @@ public class FXMLDocumentController implements Initializable,DataReceivedActionL
 		//interfaceBox.setEnabled(true);
 		//sendButton.setEnabled(false);
 		///connectButton.setSelected(false);
-		connectBtn.setText("Connect");
+		connectBtn.setText("Connect HID");
 		//lightLabel.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/icons/red.png"))));
                }
 		
@@ -346,5 +364,8 @@ public class FXMLDocumentController implements Initializable,DataReceivedActionL
 
 	}
     
+    
+    
+
     
 }
